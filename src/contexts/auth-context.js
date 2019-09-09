@@ -7,9 +7,8 @@ class AuthProvider extends Component {
   state = {
     isLoggedIn: false,
     user: {},
-    isLoading: true,
+    isLoading: true
   }
-
   userSignUp = (user) => {
     return authService.signup(user)
     .then((user) => {
@@ -69,9 +68,11 @@ class AuthProvider extends Component {
                 isLoggedIn,
                 login: this.userLogin,
                 signup: this.userSignUp,
-                logout: this.userLogout
+                logout: this.userLogout,
+                title: this.setTitle
               }
             }>
+              
               {this.props.children}
             </AuthContext.Provider>
           )}

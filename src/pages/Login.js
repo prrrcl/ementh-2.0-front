@@ -1,38 +1,43 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import withAuth from '../components/withAuth';
+import withAuth from '../components/hoc/withAuth';
+import Title from '../components/ui/Title';
 
-class Login extends Component {
-  state = {
+const Login = (props) => {
+  const [form, setForm] = useState({
     username: '',
-    password: '',
-  }
+    password: ''
+  })
 
-  handleFormSubmit = (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-    const { username, password } = this.state
+    const { username, password } = form
 
-    this.props.login({ username, password })
+    props.login({ username, password })
     .then( (user) => {
       console.log(user)
     })
     .catch( error => console.log(error) )
   }
 
-  handleChange = (event) => {  
+  const handleChange = (event) => {  
     const {name, value} = event.target;
-    this.setState({[name]: value});
+    setForm({
+      ...form,
+      [name]: value
+    })
   }
 
-  render() {
-    const { username, password } = this.state;
+
+    const { username, password } = form;
     return (
       <>
-        <form onSubmit={this.handleFormSubmit}>
+      <Title title='Login'/>
+        <form onSubmit={handleFormSubmit}>
           <label htmlFor='username' >Username:</label>
-          <input id='username' type='text' name='username' value={username} onChange={this.handleChange}/>
+          <input id='username' type='text' name='username' value={username} onChange={handleChange}/>
           <label htmlFor='password'>Password:</label>
-          <input id='password' type='password' name='password' value={password} onChange={this.handleChange} />
+          <input id='password' type='password' name='password' value={password} onChange={handleChange} />
           <input type='submit' value='Login' />
         </form>
 
@@ -41,7 +46,7 @@ class Login extends Component {
         </p>
       </>
     )
-  }
+  
 }
 
 export default withAuth(Login);
